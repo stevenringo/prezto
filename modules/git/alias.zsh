@@ -61,7 +61,7 @@ alias gix='git rm -r --cached'
 alias giX='git rm -rf --cached'
 alias gig='git grep --cached'
 
-# Konflict (k)
+# Conflict (k)
 alias gkl='git status | sed -n "s/^.*both [a-z]*ed: *//p"'
 alias gka='git add $(gkl)'
 alias gke='git mergetool $(gkl)'
