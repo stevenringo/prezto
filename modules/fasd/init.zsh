@@ -18,7 +18,7 @@ fi
 cache_file="${0:h}/cache.zsh"
 if [[ "${commands[fasd]}" -nt "$cache_file" || ! -s "$cache_file"  ]]; then
   # Set the base init arguments.
-  init_args=(posix-alias zsh-hook)
+  init_args=(zsh-hook)
 
   # Set fasd completion init arguments, if applicable.
   if zstyle -t ':prezto:module:completion' loaded; then
@@ -33,41 +33,34 @@ source "$cache_file"
 
 unset cache_file init_args
 
+function fasd_cd {
+  local fasd_ret="$(fasd -d "$@")"
+  if [[ -d "$fasd_ret" ]]; then
+    cd "$fasd_ret"
+  else
+    print "$fasd_ret"
+  fi
+}
+
 #
 # Aliases
 #
 
-# Non-interactive
-alias a='fasd -a'         # Lists files and directories.
-alias d='fasd -d'         # Lists directories.
-alias f='fasd -f'         # Lists files.
-alias j='fasd_cd'         # Changes the current working directory.
-unalias z
-
-# Interactive
-alias s='fasd -si'        # Selects files and directories interactively.
-alias sd='fasd -sid'      # Selects directories interactively.
-alias sf='fasd -sif'      # Selects files interactively.
-alias sj='fasd_cd -i'     # Changes the current working directory interactively.
-unalias zz
-
-# Backends
-alias v='f -t -e vim -b viminfo'
+# Changes the current working directory interactively.
+alias j='fasd_cd -i'
 
 #
 # Key Bindings
 #
 
-if zstyle -b ':omz:module:fasd:' editor 'bind'; then
-  for keymap in 'emacs' 'viins'; do
-    # C-x C-a completes files and direcotries.
-    bindkey -M "$keymap" "$key_info[Control]X$key_info[Control]A" fasd-complete
+for keymap in 'emacs' 'viins'; do
+  # C-x C-a completes files and direcotries.
+  bindkey -M "$keymap" "$key_info[Control]X$key_info[Control]A" fasd-complete
 
-    # C-x C-d completes directories.
-    bindkey -M "$keymap" "$key_info[Control]X$key_info[Control]D" fasd-complete-d
+  # C-x C-d completes directories.
+  bindkey -M "$keymap" "$key_info[Control]X$key_info[Control]D" fasd-complete-d
 
-    # C-x C-f completes files.
-    bindkey -M "$keymap" "$key_info[Control]X$key_info[Control]F" fasd-complete-f
-  done
-fi
+  # C-x C-f completes files.
+  bindkey -M "$keymap" "$key_info[Control]X$key_info[Control]F" fasd-complete-f
+done
 
