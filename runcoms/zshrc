@@ -11,3 +11,10 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
 fi
 
 # Customize to your needs...
+source /usr/local/share/chruby/chruby.sh
+source /usr/local/share/chruby/auto.sh
+source /usr/local/bin/aws_zsh_completer.sh
+
+chruby ruby-2.2
+echo "Ruby 2.2 loaded as default"
+chruby
