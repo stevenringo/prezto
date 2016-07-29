@@ -42,7 +42,16 @@ alias history='noglob history'
 alias locate='noglob locate'
 alias rake='noglob rake'
 alias rsync='noglob rsync'
-alias scp='noglob scp'
+alias scp='noglob scp_wrap'
+function scp_wrap {
+  local -a args
+  local i
+  for i in "$@"; do case $i in
+    (*:*) args+=($i) ;;
+    (*) args+=(${~i}) ;;
+  esac; done
+  command scp "${(@)args}"
+}
 alias sftp='noglob sftp'
 
 # Define general aliases.
